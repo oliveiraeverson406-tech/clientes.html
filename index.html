@@ -84,7 +84,7 @@ textarea{font:inherit;font-size:.78rem;color:var(--tx);background:var(--bg);bord
 
 <header>
   <h1>Painel de Clientes</h1>
-  <span class="perfil">Perfil administrador · v8</span>
+  <span class="perfil">Perfil administrador · v9</span>
 </header>
 
 <div class="resumo">
@@ -148,8 +148,15 @@ textarea{font:inherit;font-size:.78rem;color:var(--tx);background:var(--bg);bord
 </section>
 
 <script>
-window.__ok=false;setTimeout(function(){if(!window.__ok){var d=document.getElementById('erro');if(d){d.style.display='block';d.textContent='O script do painel não executou neste visualizador. Abra o arquivo no Chrome.';}}},1500);
-window.onerror=function(m,u,l){var d=document.getElementById('erro');if(d){d.style.display='block';d.textContent='Erro no script: '+m+' (linha '+l+')';}};
+window.__ok=false;window.__err='';
+function __mostra(t){var d=document.getElementById('erro');if(d){d.style.display='block';d.textContent=t;}}
+window.onerror=function(m,u,l){
+  window.__err=String(m);
+  var t='Erro no script: '+m+' (linha '+l+').';
+  if(/end of input|Unexpected end|Unterminated/i.test(String(m))){t+=' O arquivo parece estar incompleto (cortado). Baixe o arquivo pelo cartão e envie sem copiar e colar.';}
+  __mostra(t);
+};
+setTimeout(function(){if(!window.__ok&&!window.__err){__mostra('O script do painel não executou. Se o arquivo veio de copiar e colar, ele pode estar cortado: baixe o arquivo pelo cartão e envie sem copiar e colar.');}},1500);
 </script>
 <script>
 if (!Array.prototype.find) { Array.prototype.find = function (f) { for (var i = 0; i < this.length; i++) { if (f(this[i], i, this)) return this[i]; } return undefined; }; }
@@ -441,9 +448,4 @@ if (!Array.prototype.find) { Array.prototype.find = function (f) { for (var i = 
         '<button type="button" onclick="cancelar()" aria-label="Cancelar">✕</button>';
     function campo(c, k, texto) {
         if (ed && ed.id === c.id && ed.key === k) {
-            if (k === 'mes')
-                return '<span class="ed">' + seletorMes('edM', 'edA', c.mes) + BTNS + '</span>';
-            if (k === 'compra')
-                return '<span class="ed">' + seletorData('edc', c.compra || hoje()) + BTNS + '</span>';
-            var tp = TIPOS[k];
-            ret
+            if (k === 'me
