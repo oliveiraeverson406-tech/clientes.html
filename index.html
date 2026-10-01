@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Painel do Administrador</title>
+<style>
+:root{color-scheme:light dark;--bg:#f3f5f4;--card:#fff;--tx:#17211d;--mut:#66736d;--pri:#0f6b55;--pri2:#e3f1ec;--warn:#b45309;--warn2:#fdf0dc;--bd:#dde3e0}
+@media(prefers-color-scheme:dark){:root{--bg:#101614;--card:#18211e;--tx:#e8efec;--mut:#92a19a;--pri:#4cc2a1;--pri2:#1b3a31;--warn:#f0b35a;--warn2:#3a2c13;--bd:#27332e}}
+*{box-sizing:border-box;margin:0}
+body{font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;background:var(--bg);color:var(--tx);padding:14px;max-width:760px;margin:auto;line-height:1.4}
+header{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:14px}
+h1{font-size:1.25rem}
+.perfil{font-size:.75rem;background:var(--pri2);color:var(--pri);padding:4px 10px;border-radius:99px;font-weight:600}
+.resumo{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px}
+.resumo div{background:var(--card);border:1px solid var(--bd);border-radius:10px;padding:10px}
+.resumo small{color:var(--mut);font-size:.72rem;display:block}
+.resumo b{font-size:1.05rem}
+.resumo .pend b{color:var(--warn)}
+.resumo .rec b{color:var(--pri)}
+section.box{background:var(--card);border:1px solid var(--bd);border-radius:12px;padding:14px;margin-bottom:14px}
+h2{font-size:1rem;margin-bottom:10px}
+form{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+label{font-size:.78rem;color:var(--mut);display:flex;flex-direction:column;gap:4px}
+label.full{grid-column:1/-1}
+input,select{font:inherit;color:var(--tx);background:var(--bg);border:1px solid var(--bd);border-radius:8px;padding:10px;width:100%}
+input:focus-visible,select:focus-visible,button:focus-visible{outline:2px solid var(--pri);outline-offset:1px}
+.par{display:flex;gap:6px}
+.par select{padding:10px 6px;min-width:0;flex:1}
+.par.data select:first-child{flex:.55}
+.info{grid-column:1/-1;font-size:.82rem;color:var(--mut)}
+button{font:inherit;cursor:pointer;border-radius:8px;border:1px solid var(--bd);background:var(--card);color:var(--tx);padding:10px 14px}
+button.pri{background:var(--pri);border-color:var(--pri);color:#fff;font-weight:600}
+@media(prefers-color-scheme:dark){button.pri{color:#06150f}}
+.acoes{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}
+.acoes button{flex:1}
+.busca{margin-bottom:10px}
+.item{border:1px solid var(--bd);border-radius:10px;padding:12px;margin-bottom:10px}
+.topo{display:flex;justify-content:space-between;gap:8px}
+.topo b{font-size:.98rem}
+.topo .sub{color:var(--mut);font-size:.82rem}
+.tag{font-size:.72rem;padding:3px 8px;border-radius:99px;height:fit-content;white-space:nowrap}
+.tag.ok{background:var(--pri2);color:var(--pri)}
+.tag.pd{background:var(--warn2);color:var(--warn)}
+.dados{display:grid;grid-template-columns:1fr 1fr;gap:8px 12px;font-size:.84rem;margin:10px 0}
+.dados small{color:var(--mut)}
+.calc{background:var(--bg);border:1px solid var(--bd);border-radius:10px;padding:10px;margin:8px 0 12px;display:grid;gap:6px;font-size:.88rem}
+.calc h3{font-size:.8rem;color:var(--mut);font-weight:600}
+.calc .l{display:flex;justify-content:space-between;gap:8px}
+.calc .l span{color:var(--mut)}
+.calc .pago b{color:var(--pri)}
+.calc .falta{border-top:1px solid var(--bd);padding-top:6px;font-size:1rem}
+.calc .falta b{color:var(--warn)}
+.calc .ok b{color:var(--pri)}
+.barra{height:8px;background:var(--bd);border-radius:99px;overflow:hidden}
+.barra i{display:block;height:100%;background:var(--pri)}
+.lap{border:none;background:transparent;padding:2px 5px;font-size:.8rem;border-radius:6px;opacity:.75}
+.lap:hover{background:var(--pri2);opacity:1}
+.ed{display:flex;gap:4px;align-items:center;margin-top:2px;flex-wrap:wrap}
+.ed input,.ed select{padding:6px 8px;font-size:.85rem;min-width:0;width:auto;flex:1}
+.ed button{padding:6px 9px;font-size:.8rem}
+.meses{display:flex;flex-wrap:wrap;gap:6px;margin:6px 0 8px}
+.meses button{padding:6px 9px;font-size:.78rem}
+.meses button.pg{background:var(--pri2);border-color:var(--pri);color:var(--pri);font-weight:600}
+.meses button.sel{outline:2px solid var(--pri)}
+.meses button.mais{border-style:dashed;color:var(--pri)}
+.meses button.menos{border-style:dashed;color:var(--warn)}
+.pag{background:var(--bg);border:1px solid var(--pri);border-radius:10px;padding:10px;margin:4px 0 10px;display:grid;gap:8px}
+.pag b{font-size:.88rem}
+.pagbt{display:flex;gap:6px;flex-wrap:wrap}
+.pagbt button{padding:8px 10px;font-size:.8rem;flex:1;white-space:nowrap}
+.rod{display:flex;justify-content:flex-end}
+.rod button{padding:6px 10px;font-size:.78rem;color:var(--warn)}
+.erro{display:none;background:#fdecea;color:#8a1c12;border:1px solid #e5a29b;border-radius:10px;padding:10px;margin-bottom:12px;font-size:.85rem}
+.vazio{text-align:center;color:var(--mut);padding:18px 0;font-size:.9rem}
+</style>
+</head>
+<body>
+
+<div id="erro" class="erro"></div>
+
+<header>
+  <h1>Painel de Clientes</h1>
+  <span class="perfil">Perfil administrador</span>
+</header>
+
+<div class="resumo">
+  <div><small>Clientes</small><b id="rCli">0</b></div>
+  <div><small>Bruto vendido</small><b id="rTot">R$ 0,00</b></div>
+  <div class="rec"><small>Recebido</small><b id="rRec">R$ 0,00</b></div>
+  <div class="pend"><small>Falta receber</small><b id="rPen">R$ 0,00</b></div>
+</div>
+
+<div class="acoes">
+  <button class="pri" id="btnBackup" type="button">Fazer backup</button>
+  <button id="btnRestaurar" type="button">Restaurar backup</button>
+  <input type="file" id="arq" accept=".json" hidden>
+</div>
+
+<section class="box">
+  <h2>Cadastrar cliente</h2>
+  <form id="f">
+    <label class="full">Nome do cliente
+      <input id="nome" required autocomplete="off">
+    </label>
+    <label class="full">Nome do produto
+      <input id="produto" required autocomplete="off">
+    </label>
+    <label>Valor do produto (R$)
+      <input id="valor" type="number" min="0" step="0.01" inputmode="decimal" required>
+    </label>
+    <label>Quantidade
+      <input id="qtd" type="number" min="1" step="1" value="1" inputmode="numeric" required>
+    </label>
+    <label class="full">Dia da compra
+      <span class="par data" id="compraBox"></span>
+    </label>
+    <label>Parcelas (vezes)
+      <input id="vezes" type="number" min="1" max="60" step="1" value="1" inputmode="numeric" required>
+    </label>
+    <label>Mês da primeira parcela
+      <span class="par" id="mesBox"></span>
+    </label>
+    <div class="info" id="previa">Preencha os valores para ver o cálculo.</div>
+    <button class="pri" type="submit" style="grid-column:1/-1">Salvar cliente</button>
+  </form>
+</section>
+
+<section class="box">
+  <h2>Clientes cadastrados</h2>
+  <input class="busca" id="busca" placeholder="Buscar por cliente ou produto" type="search">
+  <div id="lista"></div>
+</section>
+
+<script>
+window.onerror=function(m,u,l){var d=document.getElementById('erro');if(d){d.style.display='block';d.textContent='Erro no script: '+m+' (linha '+l+')';}};
+</script>
+<script>
+(function(){
+const KEY = 'painel_clientes_v1';
+let dados = [];
+let ed = null; // campo em edição: {id, key}
+let pg = null; // pagamento em edição: {id, i}
+
+function carregar(){
+  try { dados = JSON.parse(localStorage.getItem(KEY)) || []; } catch(e){ dados = []; }
+}
+function salvar(){
+  try { localStorage.setItem(KEY, JSON.stringify(dados)); } catch(e){ alert('Não foi possível salvar neste navegador.'); }
+}
+const $ = id => document.getElementById(id);
+const brl = n => n.toLocaleString('pt-BR',{style:'currency',currency:'BRL'});
+const NOMES = ['jan','fev','mar','abr','mai','jun','jul','ago','set','out','nov','dez'];
+const MESES = ['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'];
+const dois = n => String(n).padStart(2,'0');
+
+function rotuloMes(ym, i){
+  const [a,m] = ym.split('-').map(Number);
+  const d = new Date(a, m-1+i, 1);
+  return NOMES[d.getMonth()] + '/' + String(d.getFullYear()).slice(2);
+}
+/* valor realmente pago em uma parcela (manual); backups antigos usam o valor da parcela */
+function valorPago(c, i){
+  if(c.valores && c.valores[i] !== undefined) return c.valores[i];
+  return (c.valor * c.qtd) / c.vezes;
+}
+function calc(c){
+  const total = c.valor * c.qtd;
+  const parcela = total / c.vezes;
+  const pagas = c.pagas.length;
+  const pago = c.pagas.reduce((s,i) => s + valorPago(c,i), 0);
+  const pendente = Math.max(0, total - pago);
+  const faltam = c.vezes - pagas;
+  const pct = total > 0 ? Math.min(100, pago / total * 100) : 0;
+  return {total, parcela, pagas, pago, pendente, faltam, pct, resto: faltam > 0 ? pendente / faltam : 0};
+}
+function esc(s){ return String(s).replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m])); }
+
+/* ---------- datas ---------- */
+function hoje(){
+  const d = new Date();
+  return d.getFullYear() + '-' + dois(d.getMonth()+1) + '-' + dois(d.getDate());
+}
+function fmtData(iso){
+  if(!iso) return '—';
+  const [y,m,d] = iso.split('-');
+  return d + '/' + m + '/' + y;
+}
+function fmtCurto(iso){
+  const [, m, d] = iso.split('-');
+  return d + '/' + m;
+}
+/* seletor de data: dia, mês e ano (p = prefixo dos ids) */
+function seletorData(p, iso){
+  const [a, m, d] = iso.split('-');
+  const ano = new Date().getFullYear();
+  let od = '', om = '', oa = '';
+  for(let i=1;i<=31;i++){ const v = dois(i); od += '<option value="' + v + '"' + (v === d ? ' selected' : '') + '>' + i + '</option>'; }
+  MESES.forEach((n,i) => { const v = dois(i+1); om += '<option value="' + v + '"' + (v === m ? ' selected' : '') + '>' + n + '</option>'; });
+  for(let y = ano-3; y <= ano+8; y++){ oa += '<option value="' + y + '"' + (String(y) === a ? ' selected' : '') + '>' + y + '</option>'; }
+  return '<select id="' + p + 'D" aria-label="Dia">' + od + '</select>' +
+         '<select id="' + p + 'M" aria-label="Mês">' + om + '</select>' +
+         '<select id="' + p + 'A" aria-label="Ano">' + oa + '</select>';
+}
+function lerData(p){
+  const y = $(p+'A').value, m = $(p+'M').value;
+  const max = new Date(Number(y), Number(m), 0).getDate();
+  const d = Math.min(parseInt($(p+'D').value), max);
+  return y + '-' + m + '-' + dois(d);
+}
+
+/* ---------- seletor de mês (dois selects) ---------- */
+function seletorMes(idM, idA, ym){
+  const [a, m] = ym.split('-');
+  const ano = new Date().getFullYear();
+  let om = '', oa = '';
+  MESES.forEach((n,i) => {
+    const v = dois(i+1);
+    om += '<option value="' + v + '"' + (v === m ? ' selected' : '') + '>' + n + '</option>';
+  });
+  for(let y = ano-2; y <= ano+8; y++){
+    oa += '<option value="' + y + '"' + (String(y) === a ? ' selected' : '') + '>' + y + '</option>';
+  }
+  return '<select id="' + idM + '" aria-label="Mês">' + om + '</select>' +
+         '<select id="' + idA + '" aria-label="Ano">' + oa + '</select>';
+}
+function lerMes(idM, idA){ return $(idA).value + '-' + $(idM).value; }
+function mesAtual(){ return hoje().slice(0,7); }
+function iniciarSeletor(){
+  $('mesBox').innerHTML = seletorMes('mesM','mesA', mesAtual());
+  $('compraBox').innerHTML = seletorData('cp', hoje());
+}
+
+function previa(){
+  const v = parseFloat($('valor').value), q = parseInt($('qtd').value), n = parseInt($('vezes').value);
+  if(!v || !q || !n){ $('previa').textContent = 'Preencha os valores para ver o cálculo.'; return; }
+  const t = v*q;
+  $('previa').textContent = 'Bruto ' + brl(t) + ' em ' + n + 'x de ' + brl(t/n);
+}
+['valor','qtd','vezes'].forEach(i => $(i).addEventListener('input', previa));
+
+$('f').addEventListener('submit', e => {
+  e.preventDefault();
+  dados.unshift({
+    id: Date.now(),
+    nome: $('nome').value.trim(),
+    produto: $('produto').value.trim(),
+    valor: parseFloat($('valor').value),
+    qtd: parseInt($('qtd').value),
+    vezes: parseInt($('vezes').value),
+    mes: lerMes('mesM','mesA'),
+    compra: lerData('cp'),
+    pagas: [],
+    valores: {},
+    datas: {}
+  });
+  salvar();
+  e.target.reset();
+  $('qtd').value = 1; $('vezes').value = 1;
+  iniciarSeletor();
+  previa(); render();
+});
+
+/* ---------- pagamento manual ---------- */
+function abrirPag(id, i){
+  ed = null; pg = {id, i}; render();
+  const el = $('pgIn'); if(el){ el.focus(); el.select(); }
+}
+function cancelarPag(){ pg = null; render(); }
+function usarParcela(){
+  const c = dados.find(x => x.id === pg.id);
+  $('pgIn').value = calc(c).parcela.toFixed(2);
+  $('pgIn').focus();
+}
+function salvarPag(){
+  const c = dados.find(x => x.id === pg.id);
+  const v = parseFloat($('pgIn').value.replace(',', '.'));
+  if(isNaN(v) || v <= 0) return alert('Digite o valor que o cliente pagou.');
+  if(!c.valores) c.valores = {};
+  if(!c.datas) c.datas = {};
+  c.valores[pg.i] = Math.round(v * 100) / 100;
+  c.datas[pg.i] = lerData('pgd');
+  if(!c.pagas.includes(pg.i)) c.pagas.push(pg.i);
+  pg = null; salvar(); render();
+}
+function desmarcarPag(){
+  const c = dados.find(x => x.id === pg.id);
+  c.pagas = c.pagas.filter(x => x !== pg.i);
+  if(c.valores) delete c.valores[pg.i];
+  if(c.datas) delete c.datas[pg.i];
+  pg = null; salvar(); render();
+}
+
+/* ---------- ações dos cartões ---------- */
+function maisMes(id){
+  const c = dados.find(x => x.id === id);
+  if(c.vezes >= 60) return alert('Máximo de 60 parcelas.');
+  c.vezes++;
+  salvar(); render();
+}
+function menosMes(id){
+  const c = dados.find(x => x.id === id);
+  if(c.vezes <= 1) return alert('O cliente precisa ter pelo menos 1 parcela.');
+  if(c.pagas.includes(c.vezes - 1)) return alert('A última parcela já está paga. Toque nela e use "Desmarcar" antes de remover.');
+  c.vezes--;
+  if(pg && pg.id === id && pg.i >= c.vezes) pg = null;
+  salvar(); render();
+}
+function excluir(id){
+  if(!confirm('Excluir este cliente?')) return;
+  dados = dados.filter(x => x.id !== id);
+  salvar(); render();
+}
+function editar(id, key){
+  pg = null; ed = {id, key}; render();
+  const el = $('edIn') || $('edM') || $('edcD');
+  if(el){ el.focus(); if(el.select && el.type === 'text') el.select(); }
+}
+function cancelar(){ ed = null; render(); }
+function confirmar(){
+  const c = dados.find(x => x.id === ed.id);
+  const k = ed.key;
+  if(k === 'mes'){
+    c.mes = lerMes('edM','edA');
+  } else if(k === 'compra'){
+    c.compra = lerData('edc');
+  } else {
+    const v = $('edIn').value.trim();
+    if(k === 'nome' || k === 'produto'){
+      if(!v) return alert('Preencha o campo.');
+      c[k] = v;
+    } else if(k === 'valor'){
+      const n = parseFloat(v.replace(',', '.'));
+      if(isNaN(n) || n < 0) return alert('Informe um valor válido.');
+      c.valor = n;
+    } else if(k === 'qtd'){
+      const n = parseInt(v);
+      if(!n || n < 1) return alert('Informe uma quantidade válida.');
+      c.qtd = n;
+    } else if(k === 'vezes'){
+      const n = parseInt(v);
+      const min = c.pagas.length ? Math.max(...c.pagas) + 1 : 1;
+      if(!n || n < min || n > 60) return alert('Informe entre ' + min + ' e 60 parcelas.');
+      c.vezes = n;
+    }
+  }
+  ed = null; salvar(); render();
+}
+Object.assign(window, {abrirPag, cancelarPag, usarParcela, salvarPag, desmarcarPag, maisMes, menosMes, excluir, editar, cancelar, confirmar});
+
+/* ---------- campo com lápis ---------- */
+const TIPOS = {
+  nome:{t:'text'}, produto:{t:'text'},
+  valor:{t:'number', extra:'step="0.01" inputmode="decimal"'},
+  qtd:{t:'number', extra:'step="1" inputmode="numeric"'},
+  vezes:{t:'number', extra:'step="1" inputmode="numeric"'}
+};
+const BTNS = '<button type="button" class="pri" onclick="confirmar()" aria-label="Salvar">✔</button>' +
+             '<button type="button" onclick="cancelar()" aria-label="Cancelar">✕</button>';
+function campo(c, k, texto){
+  if(ed && ed.id === c.id && ed.key === k){
+    if(k === 'mes') return '<span class="ed">' + seletorMes('edM','edA', c.mes) + BTNS + '</span>';
+    if(k === 'compra') return '<span class="ed">' + seletorData('edc', c.compra || hoje()) + BTNS + '</span>';
+    const tp = TIPOS[k];
+    return '<span class="ed"><input id="edIn" type="' + tp.t + '" ' + (tp.extra||'') +
+      ' value="' + esc(c[k]) + '" onkeydown="if(event.key===\'Enter\'){confirmar()}if(event.key===\'Escape\'){cancelar()}">' + BTNS + '</span>';
+  }
+  return texto + '<button type="button" class="lap" onclick="editar(' + c.id + ',\'' + k + '\')" aria-label="Editar">✏️</button>';
+}
+
+function painelPag(c){
+  const i = pg.i;
+  const pago = c.pagas.includes(i);
+  const atual = pago ? valorPago(c,i) : '';
+  const dataAtual = (c.datas && c.datas[i]) || hoje();
+  return '<div class="pag"><b>' + (i+1) + 'ª parcela · ' + rotuloMes(c.mes,i) + '</b>' +
+    '<label>Valor que o cliente pagou (R$)' +
+    '<input id="pgIn" type="number" min="0" step="0.01" inputmode="decimal" placeholder="Digite o valor" value="' + atual + '" ' +
+    'onkeydown="if(event.key===\'Enter\'){salvarPag()}"></label>' +
+    '<label>Dia em que pagou' +
+    '<span class="par data">' + seletorData('pgd', dataAtual) + '</span></label>' +
+    '<div class="pagbt">' +
+    '<button type="button" onclick="usarParcela()">Usar ' + brl(calc(c).parcela) + '</button>' +
+    '<button type="button" class="pri" onclick="salvarPag()">Salvar pagamento</button>' +
+    '<button type="button" onclick="cancelarPag()">Cancelar</button>' +
+    (pago ? '<button type="button" onclick="desmarcarPag()">Desmarcar</button>' : '') +
+    '</div></div>';
+}
+
+function blocoCalc(c, r){
+  const quitado = r.pendente <= 0.004;
+  return '<div class="calc"><h3>Cálculo automático</h3>' +
+    '<div class="l"><span>Bruto (' + brl(c.valor) + ' × ' + c.qtd + ')</span><b>' + brl(r.total) + '</b></div>' +
+    '<div class="l pago"><span>Já pago (' + r.pagas + ' de ' + c.vezes + ' parcelas)</span><b>' + brl(r.pago) + '</b></div>' +
+    '<div class="barra" role="progressbar" aria-valuenow="' + Math.round(r.pct) + '" aria-valuemin="0" aria-valuemax="100"><i style="width:' + r.pct.toFixed(1) + '%"></i></div>' +
+    '<div class="l falta ' + (quitado?'ok':'') + '"><span>' + (quitado ? 'Tudo pago' : 'Falta pagar') + '</span><b>' + brl(r.pendente) + '</b></div>' +
+    '</div>';
+}
+
+function render(){
+  const q = $('busca').value.toLowerCase().trim();
+  const lista = dados.filter(c => !q || c.nome.toLowerCase().includes(q) || c.produto.toLowerCase().includes(q));
+  let tot = 0, pen = 0, rec = 0;
+  dados.forEach(c => { const r = calc(c); tot += r.total; pen += r.pendente; rec += r.pago; });
+  $('rCli').textContent = dados.length;
+  $('rTot').textContent = brl(tot);
+  $('rRec').textContent = brl(rec);
+  $('rPen').textContent = brl(pen);
+
+  if(!lista.length){
+    $('lista').innerHTML = '<div class="vazio">' + (dados.length ? 'Nenhum resultado.' : 'Nenhum cliente ainda. Cadastre o primeiro acima.') + '</div>';
+    return;
+  }
+  $('lista').innerHTML = lista.map(c => {
+    const r = calc(c);
+    const quitado = r.faltam === 0;
+    let chips = '';
+    for(let i=0;i<c.vezes;i++){
+      const paga = c.pagas.includes(i);
+      const sel = pg && pg.id === c.id && pg.i === i;
+      const dt = paga && c.datas && c.datas[i] ? ' · ' + fmtCurto(c.datas[i]) : '';
+      chips += '<button type="button" class="' + (paga?'pg ':'') + (sel?'sel':'') + '" onclick="abrirPag(' + c.id + ',' + i + ')">' +
+        (paga ? '✅ ' : '') + (i+1) + 'ª ' + rotuloMes(c.mes,i) + (paga ? ' · ' + brl(valorPago(c,i)) + dt : '') + '</button>';
+    }
+    if(c.vezes > 1){
+      chips += '<button type="button" class="menos" onclick="menosMes(' + c.id + ')" aria-label="Remover última parcela">− ' + rotuloMes(c.mes, c.vezes - 1) + '</button>';
+    }
+    chips += '<button type="button" class="mais" onclick="maisMes(' + c.id + ')" aria-label="Adicionar mês seguinte">+ ' + rotuloMes(c.mes, c.vezes) + '</button>';
+    const painel = (pg && pg.id === c.id) ? painelPag(c) : '';
+    return '<div class="item">' +
+      '<div class="topo"><div><b>' + campo(c,'nome',esc(c.nome)) + '</b><br>' +
+      '<span class="sub">' + campo(c,'produto',esc(c.produto)) + '</span></div>' +
+      '<span class="tag ' + (quitado?'ok':'pd') + '">' + (quitado?'Quitado':'Pendente') + '</span></div>' +
+      '<div class="dados">' +
+      '<div><small>Valor unitário</
