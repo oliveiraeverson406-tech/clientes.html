@@ -2,14 +2,21 @@
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Painel do Administrador</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#5b3df5">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Clientes">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" type="image/png" href="icon-192.png">
+<link rel="apple-touch-icon" href="icon-192.png">
+<title>Painel de Clientes</title>
 <style>
 html{font-size:18.5px}
 :root{color-scheme:light dark;--bg:#f4f3fb;--card:#fff;--tx:#1c1b2e;--mut:#6b6a85;--pri:#5b3df5;--pri2:#ece9ff;--warn:#e8590c;--warn2:#ffeee0;--bd:#e1def2;--grad:linear-gradient(135deg,#6a4cff,#c13fe0)}
 @media(prefers-color-scheme:dark){:root{--bg:#0f0e1a;--card:#1a1930;--tx:#ecebff;--mut:#a09ec2;--pri:#a493ff;--pri2:#2b2552;--warn:#ffa45c;--warn2:#3d2a17;--bd:#2d2b4d}}
 *{box-sizing:border-box;margin:0}
-body{font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;background:var(--bg);color:var(--tx);padding:14px;max-width:760px;margin:auto;line-height:1.4}
+body{font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;background:var(--bg);color:var(--tx);padding:14px;padding-top:calc(14px + env(safe-area-inset-top,0px));padding-bottom:calc(24px + env(safe-area-inset-bottom,0px));-webkit-text-size-adjust:100%;max-width:760px;margin:auto;line-height:1.4}
 header{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:14px}
 h1{font-size:1.25rem}
 .perfil{font-size:.72rem;background:var(--grad);color:#fff;padding:5px 12px;border-radius:99px;font-weight:600}
@@ -101,8 +108,10 @@ textarea{font:inherit;font-size:.78rem;color:var(--tx);background:var(--bg);bord
 
 <header>
   <h1>Painel de Clientes</h1>
-  <span class="perfil">Perfil administrador · v13</span>
+  <span class="perfil">Perfil administrador · v14</span>
 </header>
+
+<button class="pri" id="btnInstalar" type="button" hidden style="width:100%;margin-bottom:14px">📲 Instalar aplicativo</button>
 
 <div class="resumo">
   <div><small>Clientes</small><b id="rCli">0</b></div>
@@ -421,7 +430,7 @@ if (!Array.prototype.find) { Array.prototype.find = function (f) { for (var i = 
     salvar(); render();
   }
   function editar(id, key, idx) {
-    pg= null; ed = { id: id, key: key, idx: idx || 0 }; render();
+    pg = null; ed = { id: id, key: key, idx: idx || 0 }; render();
     var el = $('edIn') || $('edM') || $('edcD');
     if (el) { el.focus(); if (el.select && el.type === 'text') el.select(); }
   }
@@ -660,6 +669,23 @@ if (!Array.prototype.find) { Array.prototype.find = function (f) { for (var i = 
     rd.readAsText(f);
     e.target.value = '';
   });
+
+  /* ---------- instalar como aplicativo ---------- */
+  var evInstalar = null;
+  window.addEventListener('beforeinstallprompt', function (e) {
+    e.preventDefault();
+    evInstalar = e;
+    $('btnInstalar').hidden = false;
+  });
+  window.addEventListener('appinstalled', function () { $('btnInstalar').hidden = true; evInstalar = null; });
+  $('btnInstalar').addEventListener('click', function () {
+    if (!evInstalar) return;
+    evInstalar.prompt();
+    evInstalar.userChoice.then(function () { evInstalar = null; $('btnInstalar').hidden = true; });
+  });
+  if ('serviceWorker' in navigator && /^https?:/.test(location.protocol)) {
+    window.addEventListener('load', function () { navigator.serviceWorker.register('sw.js').catch(function () { }); });
+  }
 
   iniciarLinhas();
   iniciarSeletor();
