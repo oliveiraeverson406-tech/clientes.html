@@ -5,46 +5,56 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Painel do Administrador</title>
 <style>
-:root{color-scheme:light dark;--bg:#f3f5f4;--card:#fff;--tx:#17211d;--mut:#66736d;--pri:#0f6b55;--pri2:#e3f1ec;--warn:#b45309;--warn2:#fdf0dc;--bd:#dde3e0}
-@media(prefers-color-scheme:dark){:root{--bg:#101614;--card:#18211e;--tx:#e8efec;--mut:#92a19a;--pri:#4cc2a1;--pri2:#1b3a31;--warn:#f0b35a;--warn2:#3a2c13;--bd:#27332e}}
+html{font-size:18.5px}
+:root{color-scheme:light dark;--bg:#f4f3fb;--card:#fff;--tx:#1c1b2e;--mut:#6b6a85;--pri:#5b3df5;--pri2:#ece9ff;--warn:#e8590c;--warn2:#ffeee0;--bd:#e1def2;--grad:linear-gradient(135deg,#6a4cff,#c13fe0)}
+@media(prefers-color-scheme:dark){:root{--bg:#0f0e1a;--card:#1a1930;--tx:#ecebff;--mut:#a09ec2;--pri:#a493ff;--pri2:#2b2552;--warn:#ffa45c;--warn2:#3d2a17;--bd:#2d2b4d}}
 *{box-sizing:border-box;margin:0}
 body{font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;background:var(--bg);color:var(--tx);padding:14px;max-width:760px;margin:auto;line-height:1.4}
 header{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:14px}
 h1{font-size:1.25rem}
-.perfil{font-size:.75rem;background:var(--pri2);color:var(--pri);padding:4px 10px;border-radius:99px;font-weight:600}
+.perfil{font-size:.72rem;background:var(--grad);color:#fff;padding:5px 12px;border-radius:99px;font-weight:600}
 .resumo{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px}
 .resumo div{background:var(--card);border:1px solid var(--bd);border-radius:10px;padding:10px}
-.resumo small{color:var(--mut);font-size:.72rem;display:block}
+.resumo small{color:var(--mut);font-size:.8rem;display:block}
 .resumo b{font-size:1.05rem}
 .resumo .pend b{color:var(--warn)}
 .resumo .rec b{color:var(--pri)}
 section.box{background:var(--card);border:1px solid var(--bd);border-radius:12px;padding:14px;margin-bottom:14px}
 h2{font-size:1rem;margin-bottom:10px}
 form{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-label{font-size:.78rem;color:var(--mut);display:flex;flex-direction:column;gap:4px}
-label.full{grid-column:1/-1}
-input,select{font:inherit;color:var(--tx);background:var(--bg);border:1px solid var(--bd);border-radius:8px;padding:10px;width:100%}
+label{font-size:.85rem;color:var(--mut);display:flex;flex-direction:column;gap:4px}
+.full{grid-column:1/-1}
+.lab{font-size:.85rem;color:var(--mut);margin-bottom:4px}
+input,select{font:inherit;color:var(--tx);background:var(--bg);border:1px solid var(--bd);border-radius:8px;padding:10px;width:100%;min-width:0}
 input:focus-visible,select:focus-visible,button:focus-visible{outline:2px solid var(--pri);outline-offset:1px}
 .par{display:flex;gap:6px}
 .par select{padding:10px 6px;min-width:0;flex:1}
 .par.data select:first-child{flex:.55}
-.info{grid-column:1/-1;font-size:.82rem;color:var(--mut)}
+.info{grid-column:1/-1;font-size:.84rem;color:var(--mut)}
 button{font:inherit;cursor:pointer;border-radius:8px;border:1px solid var(--bd);background:var(--card);color:var(--tx);padding:10px 14px}
-button.pri{background:var(--pri);border-color:var(--pri);color:#fff;font-weight:600}
-@media(prefers-color-scheme:dark){button.pri{color:#06150f}}
+button.pri{background:var(--grad);border-color:transparent;color:#fff;font-weight:600}
 .acoes{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}
 .acoes button{flex:1}
+.linha{display:grid;grid-template-columns:1fr 104px 40px;gap:6px;margin-bottom:6px}
+.linha button{padding:0}
+.linha button.x{color:var(--warn)}
+button.add{width:100%;border-style:dashed;color:var(--pri);margin-top:2px}
 .busca{margin-bottom:10px}
 .item{border:1px solid var(--bd);border-radius:10px;padding:12px;margin-bottom:10px}
 .topo{display:flex;justify-content:space-between;gap:8px}
 .topo b{font-size:.98rem}
-.topo .sub{color:var(--mut);font-size:.82rem}
-.tag{font-size:.72rem;padding:3px 8px;border-radius:99px;height:fit-content;white-space:nowrap}
+.tag{font-size:.8rem;padding:3px 8px;border-radius:99px;height:fit-content;white-space:nowrap}
 .tag.ok{background:var(--pri2);color:var(--pri)}
 .tag.pd{background:var(--warn2);color:var(--warn)}
-.dados{display:grid;grid-template-columns:1fr 1fr;gap:8px 12px;font-size:.84rem;margin:10px 0}
+.plabel{font-size:.85rem;color:var(--mut);margin:10px 0 2px}
+.prod{display:flex;justify-content:space-between;align-items:center;gap:6px;flex-wrap:wrap;padding:6px 0;border-bottom:1px solid var(--bd);font-size:.95rem}
+.prod .pn{flex:1;min-width:0}
+.prod .pv{font-weight:600}
+.prod button.x{padding:4px 8px;font-size:.78rem;color:var(--warn)}
+.soma{display:flex;justify-content:space-between;padding:8px 0;font-size:.92rem;font-weight:700}
+.dados{display:grid;grid-template-columns:1fr 1fr;gap:10px 12px;font-size:.92rem;margin:10px 0}
 .dados small{color:var(--mut)}
-.calc{background:var(--bg);border:1px solid var(--bd);border-radius:10px;padding:10px;margin:8px 0 12px;display:grid;gap:6px;font-size:.88rem}
+.calc{background:var(--bg);border:1px solid var(--bd);border-radius:10px;padding:12px;margin:8px 0 12px;display:grid;gap:7px;font-size:.95rem}
 .calc h3{font-size:.8rem;color:var(--mut);font-weight:600}
 .calc .l{display:flex;justify-content:space-between;gap:8px}
 .calc .l span{color:var(--mut)}
@@ -53,14 +63,14 @@ button.pri{background:var(--pri);border-color:var(--pri);color:#fff;font-weight:
 .calc .falta b{color:var(--warn)}
 .calc .ok b{color:var(--pri)}
 .barra{height:8px;background:var(--bd);border-radius:99px;overflow:hidden}
-.barra i{display:block;height:100%;background:var(--pri)}
-.lap{border:none;background:transparent;padding:2px 5px;font-size:.8rem;border-radius:6px;opacity:.75}
+.barra i{display:block;height:100%;background:var(--grad)}
+.lap{border:none;background:transparent;padding:3px 6px;font-size:.95rem;border-radius:6px;opacity:.75}
 .lap:hover{background:var(--pri2);opacity:1}
 .ed{display:flex;gap:4px;align-items:center;margin-top:2px;flex-wrap:wrap}
 .ed input,.ed select{padding:6px 8px;font-size:.85rem;min-width:0;width:auto;flex:1}
 .ed button{padding:6px 9px;font-size:.8rem}
 .meses{display:flex;flex-wrap:wrap;gap:6px;margin:6px 0 8px}
-.meses button{padding:6px 9px;font-size:.78rem}
+.meses button{padding:8px 11px;font-size:.88rem}
 .meses button.pg{background:var(--pri2);border-color:var(--pri);color:var(--pri);font-weight:600}
 .meses button.sel{outline:2px solid var(--pri)}
 .meses button.mais{border-style:dashed;color:var(--pri)}
@@ -68,10 +78,14 @@ button.pri{background:var(--pri);border-color:var(--pri);color:#fff;font-weight:
 .pag{background:var(--bg);border:1px solid var(--pri);border-radius:10px;padding:10px;margin:4px 0 10px;display:grid;gap:8px}
 .pag b{font-size:.88rem}
 .pagbt{display:flex;gap:6px;flex-wrap:wrap}
-.pagbt button{padding:8px 10px;font-size:.8rem;flex:1;white-space:nowrap}
+.pagbt button{padding:9px 10px;font-size:.88rem;flex:1;white-space:nowrap}
+.p0{font-size:.9rem;margin-top:3px;display:flex;align-items:center;flex-wrap:wrap;gap:2px}
+.p0.ok{color:var(--pri);font-weight:700}
+.p0.no{color:var(--mut)}
+.p0 .reg{padding:5px 10px;font-size:.85rem;margin-top:2px;color:var(--pri);border-color:var(--pri)}
 .rod{display:flex;justify-content:flex-end}
-.rod button{padding:6px 10px;font-size:.78rem;color:var(--warn)}
-.erro{display:none;position:fixed;top:0;left:0;right:0;z-index:99;border-radius:0;margin:0;background:#fdecea;color:#8a1c12;border:1px solid #e5a29b;border-radius:10px;padding:10px;margin-bottom:12px;font-size:.85rem}
+.rod button{padding:7px 11px;font-size:.85rem;color:var(--warn)}
+.erro{display:none;position:fixed;top:0;left:0;right:0;z-index:99;background:#fdecea;color:#8a1c12;border:1px solid #e5a29b;padding:10px;font-size:.85rem}
 textarea{font:inherit;font-size:.78rem;color:var(--tx);background:var(--bg);border:1px solid var(--bd);border-radius:8px;padding:10px;width:100%;min-height:120px}
 .bk p{font-size:.84rem;color:var(--mut);margin-bottom:8px}
 .vazio{text-align:center;color:var(--mut);padding:18px 0;font-size:.9rem}
@@ -84,7 +98,7 @@ textarea{font:inherit;font-size:.78rem;color:var(--tx);background:var(--bg);bord
 
 <header>
   <h1>Painel de Clientes</h1>
-  <span class="perfil">Perfil administrador · v9</span>
+  <span class="perfil">Perfil administrador · v11</span>
 </header>
 
 <div class="resumo">
@@ -118,15 +132,11 @@ textarea{font:inherit;font-size:.78rem;color:var(--tx);background:var(--bg);bord
     <label class="full">Nome do cliente
       <input id="nome" required autocomplete="off">
     </label>
-    <label class="full">Nome do produto
-      <input id="produto" required autocomplete="off">
-    </label>
-    <label>Valor do produto (R$)
-      <input id="valor" type="number" min="0" step="0.01" inputmode="decimal" required>
-    </label>
-    <label>Quantidade
-      <input id="qtd" type="number" min="1" step="1" value="1" inputmode="numeric" required>
-    </label>
+    <div class="full">
+      <div class="lab">Produtos (nome e valor de cada um)</div>
+      <div id="itensForm"></div>
+      <button type="button" class="add" id="addLinha">+ Adicionar produto</button>
+    </div>
     <label class="full">Dia da compra
       <span class="par data" id="compraBox"></span>
     </label>
@@ -136,7 +146,7 @@ textarea{font:inherit;font-size:.78rem;color:var(--tx);background:var(--bg);bord
     <label>Mês da primeira parcela
       <span class="par" id="mesBox"></span>
     </label>
-    <div class="info" id="previa">Preencha os valores para ver o cálculo.</div>
+    <div class="info" id="previa">Adicione os produtos para ver a soma.</div>
     <button class="pri" type="submit" style="grid-column:1/-1">Salvar cliente</button>
   </form>
 </section>
@@ -161,456 +171,263 @@ setTimeout(function(){if(!window.__ok&&!window.__err){__mostra('O script do pain
 <script>
 if (!Array.prototype.find) { Array.prototype.find = function (f) { for (var i = 0; i < this.length; i++) { if (f(this[i], i, this)) return this[i]; } return undefined; }; }
 (function () {
-    var KEY = 'painel_clientes_v1';
-    var dados = [];
-    var ed = null; // campo em edição: {id, key}
-    var pg = null; // pagamento em edição: {id, i}
-    function carregar() {
-        try {
-            dados = JSON.parse(localStorage.getItem(KEY)) || [];
-        }
-        catch (e) {
-            dados = [];
-        }
-    }
-    function salvar() {
-        try {
-            localStorage.setItem(KEY, JSON.stringify(dados));
-        }
-        catch (e) {
-            alert('Não foi possível salvar neste navegador.');
-        }
-    }
-    var $ = function (id) { return document.getElementById(id); };
-    var brl = function (n) { return n.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' }); };
-    var NOMES = ['jan', 'fev', 'mar', 'abr', 'mai', 'jun', 'jul', 'ago', 'set', 'out', 'nov', 'dez'];
-    var MESES = ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'];
-    function tem(a, v) { return a.indexOf(v) !== -1; }
-    var dois = function (n) { return (n < 10 ? '0' + n : '' + n); };
-    function rotuloMes(ym, i) {
-        var _a = ym.split('-').map(Number), a = _a[0], m = _a[1];
-        var d = new Date(a, m - 1 + i, 1);
-        return NOMES[d.getMonth()] + '/' + String(d.getFullYear()).slice(2);
-    }
-    /* valor realmente pago em uma parcela (manual); backups antigos usam o valor da parcela */
-    function valorPago(c, i) {
-        if (c.valores && c.valores[i] !== undefined)
-            return c.valores[i];
-        return (c.valor * c.qtd) / c.vezes;
-    }
-    function calc(c) {
-        var total = c.valor * c.qtd;
-        var parcela = total / c.vezes;
-        var pagas = c.pagas.length;
-        var pago = c.pagas.reduce(function (s, i) { return s + valorPago(c, i); }, 0);
-        var pendente = Math.max(0, total - pago);
-        var faltam = c.vezes - pagas;
-        var pct = total > 0 ? Math.min(100, pago / total * 100) : 0;
-        return { total: total, parcela: parcela, pagas: pagas, pago: pago, pendente: pendente, faltam: faltam, pct: pct, resto: faltam > 0 ? pendente / faltam : 0 };
-    }
-    function esc(s) { return String(s).replace(/[&<>"']/g, function (m) { return ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[m]); }); }
-    /* ---------- datas ---------- */
-    function hoje() {
-        var d = new Date();
-        return d.getFullYear() + '-' + dois(d.getMonth() + 1) + '-' + dois(d.getDate());
-    }
-    function fmtData(iso) {
-        if (!iso)
-            return '—';
-        var _a = iso.split('-'), y = _a[0], m = _a[1], d = _a[2];
-        return d + '/' + m + '/' + y;
-    }
-    function fmtCurto(iso) {
-        var _a = iso.split('-'), m = _a[1], d = _a[2];
-        return d + '/' + m;
-    }
-    /* seletor de data: dia, mês e ano (p = prefixo dos ids) */
-    function seletorData(p, iso) {
-        var _a = iso.split('-'), a = _a[0], m = _a[1], d = _a[2];
-        var ano = new Date().getFullYear();
-        var od = '', om = '', oa = '';
-        for (var i = 1; i <= 31; i++) {
-            var v = dois(i);
-            od += '<option value="' + v + '"' + (v === d ? ' selected' : '') + '>' + i + '</option>';
-        }
-        MESES.forEach(function (n, i) { var v = dois(i + 1); om += '<option value="' + v + '"' + (v === m ? ' selected' : '') + '>' + n + '</option>'; });
-        for (var y = ano - 3; y <= ano + 8; y++) {
-            oa += '<option value="' + y + '"' + (String(y) === a ? ' selected' : '') + '>' + y + '</option>';
-        }
-        return '<select id="' + p + 'D" aria-label="Dia">' + od + '</select>' +
-            '<select id="' + p + 'M" aria-label="Mês">' + om + '</select>' +
-            '<select id="' + p + 'A" aria-label="Ano">' + oa + '</select>';
-    }
-    function lerData(p) {
-        var y = $(p + 'A').value, m = $(p + 'M').value;
-        var max = new Date(Number(y), Number(m), 0).getDate();
-        var d = Math.min(parseInt($(p + 'D').value), max);
-        return y + '-' + m + '-' + dois(d);
-    }
-    /* ---------- seletor de mês (dois selects) ---------- */
-    function seletorMes(idM, idA, ym) {
-        var _a = ym.split('-'), a = _a[0], m = _a[1];
-        var ano = new Date().getFullYear();
-        var om = '', oa = '';
-        MESES.forEach(function (n, i) {
-            var v = dois(i + 1);
-            om += '<option value="' + v + '"' + (v === m ? ' selected' : '') + '>' + n + '</option>';
-        });
-        for (var y = ano - 2; y <= ano + 8; y++) {
-            oa += '<option value="' + y + '"' + (String(y) === a ? ' selected' : '') + '>' + y + '</option>';
-        }
-        return '<select id="' + idM + '" aria-label="Mês">' + om + '</select>' +
-            '<select id="' + idA + '" aria-label="Ano">' + oa + '</select>';
-    }
-    function lerMes(idM, idA) { return $(idA).value + '-' + $(idM).value; }
-    function mesAtual() { return hoje().slice(0, 7); }
-    function iniciarSeletor() {
-        $('mesBox').innerHTML = seletorMes('mesM', 'mesA', mesAtual());
-        $('compraBox').innerHTML = seletorData('cp', hoje());
-    }
-    function previa() {
-        var v = parseFloat($('valor').value), q = parseInt($('qtd').value), n = parseInt($('vezes').value);
-        if (!v || !q || !n) {
-            $('previa').textContent = 'Preencha os valores para ver o cálculo.';
-            return;
-        }
-        var t = v * q;
-        $('previa').textContent = 'Bruto ' + brl(t) + ' em ' + n + 'x de ' + brl(t / n);
-    }
-    ['valor', 'qtd', 'vezes'].forEach(function (i) { return $(i).addEventListener('input', previa); });
-    $('f').addEventListener('submit', function (e) {
-        e.preventDefault();
-        dados.unshift({
-            id: Date.now(),
-            nome: $('nome').value.trim(),
-            produto: $('produto').value.trim(),
-            valor: parseFloat($('valor').value),
-            qtd: parseInt($('qtd').value),
-            vezes: parseInt($('vezes').value),
-            mes: lerMes('mesM', 'mesA'),
-            compra: lerData('cp'),
-            pagas: [],
-            valores: {},
-            datas: {}
-        });
-        salvar();
-        e.target.reset();
-        $('qtd').value = 1;
-        $('vezes').value = 1;
-        iniciarSeletor();
-        previa();
-        render();
-    });
-    /* ---------- pagamento manual ---------- */
-    function abrirPag(id, i) {
-        ed = null;
-        pg = { id: id, i: i };
-        render();
-        var el = $('pgIn');
-        if (el) {
-            el.focus();
-            el.select();
-        }
-    }
-    function cancelarPag() { pg = null; render(); }
-    function usarParcela() {
-        var c = dados.find(function (x) { return x.id === pg.id; });
-        $('pgIn').value = calc(c).parcela.toFixed(2);
-        $('pgIn').focus();
-    }
-    function salvarPag() {
-        var c = dados.find(function (x) { return x.id === pg.id; });
-        var v = parseFloat($('pgIn').value.replace(',', '.'));
-        if (isNaN(v) || v <= 0)
-            return alert('Digite o valor que o cliente pagou.');
-        if (!c.valores)
-            c.valores = {};
-        if (!c.datas)
-            c.datas = {};
-        c.valores[pg.i] = Math.round(v * 100) / 100;
-        c.datas[pg.i] = lerData('pgd');
-        if (!tem(c.pagas, pg.i))
-            c.pagas.push(pg.i);
-        pg = null;
-        salvar();
-        render();
-    }
-    function desmarcarPag() {
-        var c = dados.find(function (x) { return x.id === pg.id; });
-        c.pagas = c.pagas.filter(function (x) { return x !== pg.i; });
-        if (c.valores)
-            delete c.valores[pg.i];
-        if (c.datas)
-            delete c.datas[pg.i];
-        pg = null;
-        salvar();
-        render();
-    }
-    /* ---------- ações dos cartões ---------- */
-    function maisMes(id) {
-        var c = dados.find(function (x) { return x.id === id; });
-        if (c.vezes >= 60)
-            return alert('Máximo de 60 parcelas.');
-        c.vezes++;
-        salvar();
-        render();
-    }
-    function menosMes(id) {
-        var c = dados.find(function (x) { return x.id === id; });
-        if (c.vezes <= 1)
-            return alert('O cliente precisa ter pelo menos 1 parcela.');
-        if (tem(c.pagas, c.vezes - 1))
-            return alert('A última parcela já está paga. Toque nela e use "Desmarcar" antes de remover.');
-        c.vezes--;
-        if (pg && pg.id === id && pg.i >= c.vezes)
-            pg = null;
-        salvar();
-        render();
-    }
-    function excluir(id) {
-        if (!confirm('Excluir este cliente?'))
-            return;
-        dados = dados.filter(function (x) { return x.id !== id; });
-        salvar();
-        render();
-    }
-    function editar(id, key) {
-        pg = null;
-        ed = { id: id, key: key };
-        render();
-        var el = $('edIn') || $('edM') || $('edcD');
-        if (el) {
-            el.focus();
-            if (el.select && el.type === 'text')
-                el.select();
-        }
-    }
-    function cancelar() { ed = null; render(); }
-    function confirmar() {
-        var c = dados.find(function (x) { return x.id === ed.id; });
-        var k = ed.key;
-        if (k === 'mes') {
-            c.mes = lerMes('edM', 'edA');
-        }
-        else if (k === 'compra') {
-            c.compra = lerData('edc');
-        }
-        else {
-            var v = $('edIn').value.trim();
-            if (k === 'nome' || k === 'produto') {
-                if (!v)
-                    return alert('Preencha o campo.');
-                c[k] = v;
-            }
-            else if (k === 'valor') {
-                var n = parseFloat(v.replace(',', '.'));
-                if (isNaN(n) || n < 0)
-                    return alert('Informe um valor válido.');
-                c.valor = n;
-            }
-            else if (k === 'qtd') {
-                var n = parseInt(v);
-                if (!n || n < 1)
-                    return alert('Informe uma quantidade válida.');
-                c.qtd = n;
-            }
-            else if (k === 'vezes') {
-                var n = parseInt(v);
-                var min = c.pagas.length ? Math.max.apply(Math, c.pagas) + 1 : 1;
-                if (!n || n < min || n > 60)
-                    return alert('Informe entre ' + min + ' e 60 parcelas.');
-                c.vezes = n;
-            }
-        }
-        ed = null;
-        salvar();
-        render();
-    }
-    window.abrirPag = abrirPag;
-    window.cancelarPag = cancelarPag;
-    window.usarParcela = usarParcela;
-    window.salvarPag = salvarPag;
-    window.desmarcarPag = desmarcarPag;
-    window.maisMes = maisMes;
-    window.menosMes = menosMes;
-    window.excluir = excluir;
-    window.editar = editar;
-    window.cancelar = cancelar;
-    window.confirmar = confirmar;
-    /* ---------- campo com lápis ---------- */
-    var TIPOS = {
-        nome: { t: 'text' }, produto: { t: 'text' },
-        valor: { t: 'number', extra: 'step="0.01" inputmode="decimal"' },
-        qtd: { t: 'number', extra: 'step="1" inputmode="numeric"' },
-        vezes: { t: 'number', extra: 'step="1" inputmode="numeric"' }
-    };
-    var BTNS = '<button type="button" class="pri" onclick="confirmar()" aria-label="Salvar">✔</button>' +
-        '<button type="button" onclick="cancelar()" aria-label="Cancelar">✕</button>';
-    function campo(c, k, texto) {
-        if (ed && ed.id === c.id && ed.key === k) {
-            if (k === 'mes')
-                return '<span class="ed">' + seletorMes('edM', 'edA', c.mes) + BTNS + '</span>';
-            if (k === 'compra')
-                return '<span class="ed">' + seletorData('edc', c.compra || hoje()) + BTNS + '</span>';
-            var tp = TIPOS[k];
-            return '<span class="ed"><input id="edIn" type="' + tp.t + '" ' + (tp.extra || '') +
-                ' value="' + esc(c[k]) + '" onkeydown="if(event.key===\'Enter\'){confirmar()}if(event.key===\'Escape\'){cancelar()}">' + BTNS + '</span>';
-        }
-        return texto + '<button type="button" class="lap" onclick="editar(' + c.id + ',\'' + k + '\')" aria-label="Editar">✏️</button>';
-    }
-    function painelPag(c) {
-        var i = pg.i;
-        var pago = tem(c.pagas, i);
-        var atual = pago ? valorPago(c, i) : '';
-        var dataAtual = (c.datas && c.datas[i]) || hoje();
-        return '<div class="pag"><b>' + (i + 1) + 'ª parcela · ' + rotuloMes(c.mes, i) + '</b>' +
-            '<label>Valor que o cliente pagou (R$)' +
-            '<input id="pgIn" type="number" min="0" step="0.01" inputmode="decimal" placeholder="Digite o valor" value="' + atual + '" ' +
-            'onkeydown="if(event.key===\'Enter\'){salvarPag()}"></label>' +
-            '<label>Dia em que pagou' +
-            '<span class="par data">' + seletorData('pgd', dataAtual) + '</span></label>' +
-            '<div class="pagbt">' +
-            '<button type="button" onclick="usarParcela()">Usar ' + brl(calc(c).parcela) + '</button>' +
-            '<button type="button" class="pri" onclick="salvarPag()">Salvar pagamento</button>' +
-            '<button type="button" onclick="cancelarPag()">Cancelar</button>' +
-            (pago ? '<button type="button" onclick="desmarcarPag()">Desmarcar</button>' : '') +
-            '</div></div>';
-    }
-    function blocoCalc(c, r) {
-        var quitado = r.pendente <= 0.004;
-        return '<div class="calc"><h3>Cálculo automático</h3>' +
-            '<div class="l"><span>Bruto (' + brl(c.valor) + ' × ' + c.qtd + ')</span><b>' + brl(r.total) + '</b></div>' +
-            '<div class="l pago"><span>Já pago (' + r.pagas + ' de ' + c.vezes + ' parcelas)</span><b>' + brl(r.pago) + '</b></div>' +
-            '<div class="barra" role="progressbar" aria-valuenow="' + Math.round(r.pct) + '" aria-valuemin="0" aria-valuemax="100"><i style="width:' + r.pct.toFixed(1) + '%"></i></div>' +
-            '<div class="l falta ' + (quitado ? 'ok' : '') + '"><span>' + (quitado ? 'Tudo pago' : 'Falta pagar') + '</span><b>' + brl(r.pendente) + '</b></div>' +
-            '</div>';
-    }
-    function render() {
-        var q = $('busca').value.toLowerCase().trim();
-        var lista = dados.filter(function (c) { return !q || tem(c.nome.toLowerCase(), q) || tem(c.produto.toLowerCase(), q); });
-        var tot = 0, pen = 0, rec = 0;
-        dados.forEach(function (c) { var r = calc(c); tot += r.total; pen += r.pendente; rec += r.pago; });
-        $('rCli').textContent = dados.length;
-        $('rTot').textContent = brl(tot);
-        $('rRec').textContent = brl(rec);
-        $('rPen').textContent = brl(pen);
-        if (!lista.length) {
-            $('lista').innerHTML = '<div class="vazio">' + (dados.length ? 'Nenhum resultado.' : 'Nenhum cliente ainda. Cadastre o primeiro acima.') + '</div>';
-            return;
-        }
-        $('lista').innerHTML = lista.map(function (c) {
-            var r = calc(c);
-            var quitado = r.faltam === 0;
-            var chips = '';
-            for (var i = 0; i < c.vezes; i++) {
-                var paga = tem(c.pagas, i);
-                var sel = pg && pg.id === c.id && pg.i === i;
-                var dt = paga && c.datas && c.datas[i] ? ' · ' + fmtCurto(c.datas[i]) : '';
-                chips += '<button type="button" class="' + (paga ? 'pg ' : '') + (sel ? 'sel' : '') + '" onclick="abrirPag(' + c.id + ',' + i + ')">' +
-                    (paga ? '✅ ' : '') + (i + 1) + 'ª ' + rotuloMes(c.mes, i) + (paga ? ' · ' + brl(valorPago(c, i)) + dt : '') + '</button>';
-            }
-            if (c.vezes > 1) {
-                chips += '<button type="button" class="menos" onclick="menosMes(' + c.id + ')" aria-label="Remover última parcela">− ' + rotuloMes(c.mes, c.vezes - 1) + '</button>';
-            }
-            chips += '<button type="button" class="mais" onclick="maisMes(' + c.id + ')" aria-label="Adicionar mês seguinte">+ ' + rotuloMes(c.mes, c.vezes) + '</button>';
-            var painel = (pg && pg.id === c.id) ? painelPag(c) : '';
-            return '<div class="item">' +
-                '<div class="topo"><div><b>' + campo(c, 'nome', esc(c.nome)) + '</b><br>' +
-                '<span class="sub">' + campo(c, 'produto', esc(c.produto)) + '</span></div>' +
-                '<span class="tag ' + (quitado ? 'ok' : 'pd') + '">' + (quitado ? 'Quitado' : 'Pendente') + '</span></div>' +
-                '<div class="dados">' +
-                '<div><small>Valor unitário</small><br>' + campo(c, 'valor', brl(c.valor)) + '</div>' +
-                '<div><small>Quantidade</small><br>' + campo(c, 'qtd', c.qtd + ' un.') + '</div>' +
-                '<div><small>Parcelas (vezes)</small><br>' + campo(c, 'vezes', c.vezes + 'x') + '</div>' +
-                '<div><small>Primeira parcela</small><br>' + campo(c, 'mes', rotuloMes(c.mes, 0)) + '</div>' +
-                '<div><small>Dia da compra</small><br>' + campo(c, 'compra', fmtData(c.compra)) + '</div>' +
-                '<div><small>Valor da parcela</small><br>' + brl(r.parcela) + '</div>' +
-                '<div><small>Faltam pagar</small><br>' + r.faltam + ' parcela(s)</div>' +
-                '<div><small>Restante por parcela</small><br>' + brl(r.resto) + '</div>' +
-                '</div>' +
-                blocoCalc(c, r) +
-                '<small style="color:var(--mut)">Toque no mês para digitar o valor e o dia do pagamento</small>' +
-                '<div class="meses">' + chips + '</div>' + painel +
-                '<div class="rod"><button type="button" onclick="excluir(' + c.id + ')">Excluir</button></div>' +
-                '</div>';
-        }).join('');
-    }
-    $('busca').addEventListener('input', render);
-    function abrirBk(msg, txt) {
-        $('bkBox').hidden = false;
-        $('bkMsg').textContent = msg;
-        $('bkTxt').value = txt;
-        $('bkBox').scrollIntoView();
-    }
-    function aplicarBk(txt) {
-        try {
-            var j = JSON.parse(txt);
-            if (!Array.isArray(j))
-                throw 0;
-            if (!confirm('Substituir os dados atuais pelo backup?'))
-                return;
-            dados = j;
-            salvar();
-            render();
-            $('bkBox').hidden = true;
-        }
-        catch (err) {
-            alert('Backup inválido. Cole o texto completo do backup.');
-        }
-    }
-    $('btnBackup').addEventListener('click', function () {
-        var txt = JSON.stringify(dados, null, 2);
-        abrirBk('Backup pronto. Toque em "Copiar texto" e guarde em um lugar seguro (notas, WhatsApp, e-mail).', txt);
-        try {
-            var blob = new Blob([txt], { type: 'application/json' });
-            var a = document.createElement('a');
-            a.href = URL.createObjectURL(blob);
-            a.download = 'backup-clientes-' + hoje() + '.json';
-            document.body.appendChild(a);
-            a.click();
-            a.remove();
-        }
-        catch (e) { }
-    });
-    $('btnRestaurar').addEventListener('click', function () {
-        abrirBk('Cole aqui o texto do backup e toque em "Restaurar deste texto", ou abra o arquivo .json.', '');
-        $('bkTxt').focus();
-    });
-    $('bkCopiar').addEventListener('click', function () {
-        var t = $('bkTxt');
-        t.focus();
-        t.select();
-        try {
-            if (navigator.clipboard && navigator.clipboard.writeText) {
-                navigator.clipboard.writeText(t.value);
-            }
-            else {
-                document.execCommand('copy');
-            }
-            alert('Texto copiado.');
-        }
-        catch (e) {
-            alert('Selecione o texto e copie manualmente.');
-        }
-    });
-    $('bkRest').addEventListener('click', function () { return aplicarBk($('bkTxt').value); });
-    $('bkFechar').addEventListener('click', function () { $('bkBox').hidden = true; });
-    $('bkArqBtn').addEventListener('click', function () { return $('arq').click(); });
-    $('arq').addEventListener('change', function (e) {
-        var f = e.target.files[0];
-        if (!f)
-            return;
-        var rd = new FileReader();
-        rd.onload = function () { return aplicarBk(rd.result); };
-        rd.readAsText(f);
-        e.target.value = '';
-    });
-    iniciarSeletor();
-    carregar();
-    render();
-    window.__ok = true;
-})();
+  var KEY = 'painel_clientes_v1';
+  var dados = [];
+  var ed = null; // campo em edição: {id, key, idx}
+  var pg = null; // pagamento em edição: {id, i}
 
-</script>
-</body>
-</html>
+  function $(id) { return document.getElementById(id); }
+  function brl(n) { return n.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' }); }
+  function dois(n) { return n < 10 ? '0' + n : '' + n; }
+  function tem(a, v) { return a.indexOf(v) !== -1; }
+  function esc(s) {
+    return String(s).replace(/[&<>"']/g, function (m) {
+      return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[m];
+    });
+  }
+  var NOMES = ['jan', 'fev', 'mar', 'abr', 'mai', 'jun', 'jul', 'ago', 'set', 'out', 'nov', 'dez'];
+  var MESES = ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'];
+
+  /* ---------- dados ---------- */
+  function somaItens(itens) {
+    var t = 0;
+    for (var i = 0; i < itens.length; i++) { t += Number(itens[i].valor) || 0; }
+    return t;
+  }
+  /* clientes antigos (um produto x quantidade) viram uma lista de produtos com o mesmo total */
+  function normaliza(c) {
+    if (!c.itens) {
+      c.itens = [{ nome: c.produto || 'Produto', valor: (c.valor || 0) * (c.qtd || 1) }];
+      delete c.produto; delete c.valor; delete c.qtd;
+    }
+    if (!c.pagas) c.pagas = [];
+    if (!c.valores) c.valores = {};
+    if (!c.datas) c.datas = {};
+    return c;
+  }
+  function carregar() {
+    try { dados = (JSON.parse(localStorage.getItem(KEY)) || []).map(normaliza); }
+    catch (e) { dados = []; }
+  }
+  function salvar() {
+    try { localStorage.setItem(KEY, JSON.stringify(dados)); }
+    catch (e) { alert('Não foi possível salvar neste navegador.'); }
+  }
+  function achar(id) { return dados.find(function (x) { return x.id === id; }); }
+
+  function rotuloMes(ym, i) {
+    var p = ym.split('-').map(Number);
+    var d = new Date(p[0], p[1] - 1 + i, 1);
+    return NOMES[d.getMonth()] + '/' + String(d.getFullYear()).slice(2);
+  }
+  function valorPago(c, i) {
+    if (c.valores && c.valores[i] !== undefined) return c.valores[i];
+    return somaItens(c.itens) / c.vezes;
+  }
+  function calc(c) {
+    var total = somaItens(c.itens);
+    var parcela = total / c.vezes;
+    var pagas = c.pagas.length;
+    var pago = c.pagas.reduce(function (s, i) { return s + valorPago(c, i); }, 0);
+    var pendente = Math.max(0, total - pago);
+    var faltam = c.vezes - pagas;
+    var pct = total > 0 ? Math.min(100, pago / total * 100) : 0;
+    return { total: total, parcela: parcela, pagas: pagas, pago: pago, pendente: pendente, faltam: faltam, pct: pct, resto: faltam > 0 ? pendente / faltam : 0 };
+  }
+
+  /* ---------- datas ---------- */
+  function hoje() {
+    var d = new Date();
+    return d.getFullYear() + '-' + dois(d.getMonth() + 1) + '-' + dois(d.getDate());
+  }
+  function fmtData(iso) {
+    if (!iso) return '—';
+    var p = iso.split('-');
+    return p[2] + '/' + p[1] + '/' + p[0];
+  }
+  function fmtCurto(iso) {
+    var p = iso.split('-');
+    return p[2] + '/' + p[1];
+  }
+  function seletorData(p, iso) {
+    var q = iso.split('-'), a = q[0], m = q[1], d = q[2];
+    var ano = new Date().getFullYear();
+    var od = '', om = '', oa = '', i, v, y;
+    for (i = 1; i <= 31; i++) { v = dois(i); od += '<option value="' + v + '"' + (v === d ? ' selected' : '') + '>' + i + '</option>'; }
+    for (i = 0; i < 12; i++) { v = dois(i + 1); om += '<option value="' + v + '"' + (v === m ? ' selected' : '') + '>' + MESES[i] + '</option>'; }
+    for (y = ano - 3; y <= ano + 8; y++) { oa += '<option value="' + y + '"' + (String(y) === a ? ' selected' : '') + '>' + y + '</option>'; }
+    return '<select id="' + p + 'D" aria-label="Dia">' + od + '</select>' +
+      '<select id="' + p + 'M" aria-label="Mês">' + om + '</select>' +
+      '<select id="' + p + 'A" aria-label="Ano">' + oa + '</select>';
+  }
+  function lerData(p) {
+    var y = $(p + 'A').value, m = $(p + 'M').value;
+    var max = new Date(Number(y), Number(m), 0).getDate();
+    var d = Math.min(parseInt($(p + 'D').value, 10), max);
+    return y + '-' + m + '-' + dois(d);
+  }
+  function seletorMes(idM, idA, ym) {
+    var q = ym.split('-'), a = q[0], m = q[1];
+    var ano = new Date().getFullYear();
+    var om = '', oa = '', i, v, y;
+    for (i = 0; i < 12; i++) { v = dois(i + 1); om += '<option value="' + v + '"' + (v === m ? ' selected' : '') + '>' + MESES[i] + '</option>'; }
+    for (y = ano - 2; y <= ano + 8; y++) { oa += '<option value="' + y + '"' + (String(y) === a ? ' selected' : '') + '>' + y + '</option>'; }
+    return '<select id="' + idM + '" aria-label="Mês">' + om + '</select>' +
+      '<select id="' + idA + '" aria-label="Ano">' + oa + '</select>';
+  }
+  function lerMes(idM, idA) { return $(idA).value + '-' + $(idM).value; }
+  function iniciarSeletor() {
+    $('mesBox').innerHTML = seletorMes('mesM', 'mesA', hoje().slice(0, 7));
+    $('compraBox').innerHTML = seletorData('cp', hoje());
+  }
+
+  /* ---------- formulário: lista de produtos ---------- */
+  function linhaHtml() {
+    return '<div class="linha"><input class="in-nome" placeholder="Produto (ex.: Perfume)" autocomplete="off">' +
+      '<input class="in-valor" type="number" min="0" step="0.01" inputmode="decimal" placeholder="R$">' +
+      '<button type="button" class="x" aria-label="Remover produto">✕</button></div>';
+  }
+  function iniciarLinhas() { $('itensForm').innerHTML = linhaHtml(); }
+  function lerLinhas() {
+    var rows = $('itensForm').querySelectorAll('.linha');
+    var itens = [], erro = '';
+    for (var i = 0; i < rows.length; i++) {
+      var nome = rows[i].querySelector('.in-nome').value.trim();
+      var vs = rows[i].querySelector('.in-valor').value.replace(',', '.');
+      if (!nome && !vs) continue;
+      var v = parseFloat(vs);
+      if (!nome) { erro = 'Digite o nome do produto da linha ' + (i + 1) + '.'; break; }
+      if (isNaN(v) || v < 0) { erro = 'Digite o valor do produto "' + nome + '".'; break; }
+      itens.push({ nome: nome, valor: Math.round(v * 100) / 100 });
+    }
+    return { itens: itens, erro: erro };
+  }
+  function previa() {
+    var r = lerLinhas();
+    var n = parseInt($('vezes').value, 10);
+    if (!r.itens.length) { $('previa').textContent = 'Adicione os produtos para ver a soma.'; return; }
+    var t = somaItens(r.itens);
+    $('previa').textContent = 'Soma dos produtos: ' + brl(t) + (n ? ' · em ' + n + 'x de ' + brl(t / n) : '');
+  }
+  $('addLinha').addEventListener('click', function () {
+    $('itensForm').insertAdjacentHTML('beforeend', linhaHtml());
+    var ins = $('itensForm').querySelectorAll('.in-nome');
+    ins[ins.length - 1].focus();
+  });
+  $('itensForm').addEventListener('input', previa);
+  $('itensForm').addEventListener('click', function (e) {
+    var t = e.target;
+    if (t.className !== 'x') return;
+    var rows = $('itensForm').querySelectorAll('.linha');
+    var row = t.parentNode;
+    if (rows.length > 1) { row.parentNode.removeChild(row); }
+    else { row.querySelector('.in-nome').value = ''; row.querySelector('.in-valor').value = ''; }
+    previa();
+  });
+  $('vezes').addEventListener('input', previa);
+
+  $('f').addEventListener('submit', function (e) {
+    e.preventDefault();
+    var r = lerLinhas();
+    if (r.erro) { alert(r.erro); return; }
+    if (!r.itens.length) { alert('Adicione pelo menos um produto com nome e valor.'); return; }
+    dados.unshift({
+      id: Date.now(),
+      nome: $('nome').value.trim(),
+      itens: r.itens,
+      vezes: parseInt($('vezes').value, 10),
+      mes: lerMes('mesM', 'mesA'),
+      compra: lerData('cp'),
+      pagas: [],
+      valores: {},
+      datas: {}
+    });
+    salvar();
+    e.target.reset();
+    $('vezes').value = 1;
+    iniciarLinhas();
+    iniciarSeletor();
+    previa();
+    render();
+  });
+
+  /* ---------- produtos de um cliente já cadastrado ---------- */
+  function addItem(id) {
+    var c = achar(id);
+    var n = $('an' + id).value.trim();
+    var v = parseFloat($('av' + id).value.replace(',', '.'));
+    if (!n) { alert('Digite o nome do produto.'); return; }
+    if (isNaN(v) || v < 0) { alert('Digite o valor do produto.'); return; }
+    c.itens.push({ nome: n, valor: Math.round(v * 100) / 100 });
+    salvar(); render();
+  }
+  function delItem(id, ix) {
+    var c = achar(id);
+    if (c.itens.length <= 1) { alert('O cliente precisa ter pelo menos 1 produto.'); return; }
+    c.itens.splice(ix, 1);
+    ed = null;
+    salvar(); render();
+  }
+
+  /* ---------- pagamento manual ---------- */
+  function abrirPag(id, i) {
+    ed = null; pg = { id: id, i: i }; render();
+    var el = $('pgIn');
+    if (el) { el.focus(); el.select(); }
+  }
+  function cancelarPag() { pg = null; render(); }
+  function usarParcela() {
+    var c = achar(pg.id);
+    $('pgIn').value = calc(c).parcela.toFixed(2);
+    $('pgIn').focus();
+  }
+  function salvarPag() {
+    var c = achar(pg.id);
+    var v = parseFloat($('pgIn').value.replace(',', '.'));
+    if (isNaN(v) || v <= 0) { alert('Digite o valor que o cliente pagou.'); return; }
+    c.valores[pg.i] = Math.round(v * 100) / 100;
+    c.datas[pg.i] = lerData('pgd');
+    if (!tem(c.pagas, pg.i)) c.pagas.push(pg.i);
+    pg = null; salvar(); render();
+  }
+  function desmarcarPag() {
+    var c = achar(pg.id);
+    c.pagas = c.pagas.filter(function (x) { return x !== pg.i; });
+    delete c.valores[pg.i];
+    delete c.datas[pg.i];
+    pg = null; salvar(); render();
+  }
+
+  /* ---------- ações dos cartões ---------- */
+  function maisMes(id) {
+    var c = achar(id);
+    if (c.vezes >= 60) { alert('Máximo de 60 parcelas.'); return; }
+    c.vezes++; salvar(); render();
+  }
+  function menosMes(id) {
+    var c = achar(id);
+    if (c.vezes <= 1) { alert('O cliente precisa ter pelo menos 1 parcela.'); return; }
+    if (tem(c.pagas, c.vezes - 1)) { alert('A última parcela já está paga. Toque nela e use "Desmarcar" antes de remover.'); return; }
+    c.vezes--;
+    if (pg && pg.id === id && pg.i >= c.vezes) pg = null;
+    salvar(); render();
+  }
+  function excluir(id) {
+    if (!confirm('Excluir este cliente?')) return;
+    dados = dados.filter(function (x) { return x.id !== id; });
+    salvar(); render();
+  }
+  function editar(id, key, idx) {
+    pg = null; ed = { id: id, key: key, idx: idx || 0 }; render();
+    var el = $('edIn') || $('edM') || $('edcD');
+    if (el) { el.focus(); if (el.select && el.type === 'text') el.select(); }
+  }
+  function cancelar() { ed = null; render(); }
+  function confirmar() {
+    var c = achar(ed.id);
+    var k = ed.key;
+    var n;
+    if (k === 'mes') {
+      c.mes = lerMes('edM', 'edA');
+    } else if (k === 'compra') {
+      c.compra = lerData('edc');
